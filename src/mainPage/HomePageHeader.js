@@ -3,6 +3,9 @@
  */
 import React from 'react';
 import './HomePage.css';
+import HomePageIntro from "./HomePageIntro";
+import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
+import SignIn from "../BasePages/SignIn";
 
 
 class HomePageHeader extends React.Component {
@@ -27,16 +30,10 @@ class HomePageHeader extends React.Component {
                     </header>
 
 
-                    <section id="intro">
-                        <div className="container-lg">
-                            <h1>
-                                WAT is here to help you test your web application
-                            </h1>
-                            <p class="common-BodyText">
-                                WAT is the best software platform for testing your web app. We handle all ui testing methods.
-                            </p>
-                        </div>
-                    </section>
+                    <Switch>
+                        <Route exact path="/" component={HomePageIntro}/>
+                        <Route path="/SignIn" component={SignIn}/>
+                    </Switch>
                 </main>
 
             </div>

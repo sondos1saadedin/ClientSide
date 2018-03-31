@@ -1,18 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import {Provider} from 'react-redux';
 import registerServiceWorker from './registerServiceWorker';
-import ScenarioList from "./DataComponents/Components/ScenarioList";
-import Login from "./Pages/UserPages/Login";
-import SCard from "./Aseel/SCard";
-import ScenarioPageBar from "./WriteScenarioPage/ScenarioPageBar";
-import DemoBase from "./WriteScenarioPage/ScenarioTable";
-import ScenarioPage from "./WriteScenarioPage/ScenarioPage";
-import MainPage from "./BasePages/MainPage"
-import HomePageHeader from "./mainPage/HomePageHeader";
 import HomePage from "./mainPage/HomePage";
+import reducer from './store/reducer/reducer';
+import {createStore} from 'redux';
 
 
-ReactDOM.render(<HomePage/>, document.getElementById('root'));
+const store = createStore(reducer);
+
+
+ReactDOM.render(<Provider store={store}><HomePage/></Provider>,
+    document.getElementById('root'));
 registerServiceWorker();

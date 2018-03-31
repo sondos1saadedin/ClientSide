@@ -45,7 +45,7 @@ class SignIn extends Component {
 
 
     loginMe = () => {
-        fetch('http://localhost:8090/sign-in?email='+ this.state.username + '&password=123456')
+        fetch('http://localhost:8090/sign-in?email=' + this.state.username + '&password=123456')
             .then(response => response.json())
             .then(data => this.setState({logged: data}));
     };
@@ -53,54 +53,58 @@ class SignIn extends Component {
 
     render() {
         return (
-            <div className={this.state.classes.root}>
+            <section id="intro">
+                <div className="container-lg">
+                <div className={this.state.classes.root}>
 
 
-                <form>
+                    <form>
 
-                    <TextField
-                        id="name"
-                        label="Name"
-                        className={this.state.classes.textField}
-                        value={this.state.name}
-                        onChange={this.handleChange}
-                        margin="normal"
-                    />
+                        <TextField
+                            id="name"
+                            label="Name"
+                            className={this.state.classes.textField}
+                            value={this.state.name}
+                            onChange={this.handleChange}
+                            margin="normal"
+                        />
 
-                    <TextField
-                        id="password-input"
-                        label="Password"
-                        className={this.state.classes.textField}
-                        type="password"
-                        autoComplete="current-password"
-                        onChange={this.handlePasswordChange}
-                        margin="normal"
-                    />
-
-
-                    <Button variant="raised" color="primary" className={this.state.classes.button}
-                            onClick={this.loginMe}>
-                        Login
-                    </Button>
-                </form>
+                        <TextField
+                            id="password-input"
+                            label="Password"
+                            className={this.state.classes.textField}
+                            type="password"
+                            autoComplete="current-password"
+                            onChange={this.handlePasswordChange}
+                            margin="normal"
+                        />
 
 
-                {
-                    this.state.logged.map(
-                        v => {
-                            console.log(v);
-                            if (v == "true"){
-                                console.log("heeey");
-                                 this.props.changeNav(true);
-                            }else{
-                                console.log("nnnnnn");
+                        <Button variant="raised" color="primary" className={this.state.classes.button}
+                                onClick={this.loginMe}>
+                            Login
+                        </Button>
+                    </form>
 
-                                 this.props.changeddNav;
+
+                    {
+                        this.state.logged.map(
+                            v => {
+                                console.log(v);
+                                if (v == "true") {
+                                    console.log("heeey");
+                                    this.props.changeNav(true);
+                                } else {
+                                    console.log("nnnnnn");
+
+                                    this.props.changeddNav;
+                                }
                             }
-                        }
-                    )
-                }
+                        )
+                    }
+                </div>
             </div>
+            </section>
         );
     }
 }
