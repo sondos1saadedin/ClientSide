@@ -1,0 +1,24 @@
+body {
+    padding: 0px;
+    margin: 0px;
+    background: #fff;
+    min-height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    font-size: 62.5%;
+    font-family: Camphor,Open Sans,Segoe UI,sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-font-feature-settings: "pnum";
+    font-feature-settings: "pnum";
+    font-variant-numeric: proportional-nums
+}

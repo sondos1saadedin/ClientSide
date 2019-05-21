@@ -28,19 +28,21 @@ class HomePageNav extends React.Component {
                                 </li>
 
                                 <li className="navSection primary">
-                                    <button className="rootLink item-products hasDropdown colorize"
+                                    <Link to="/aboutUs">
+                                    <button className="rootLink item-products  colorize"
                                             aria-expanded="false"
                                             aria-haspopup="true" data-dropdown="products">
-                                        <span>Products</span>
+                                        <span>About</span>
                                     </button>
-                                    <button className="rootLink item-developers hasDropdown colorize"
+                                    </Link>
+                                    <button className="rootLink item-developers  colorize"
                                             aria-expanded="true"
                                             aria-haspopup="true" data-dropdown="developers">
                                         <span>Developers</span>
                                     </button>
-                                    <button className="rootLink item-company hasDropdown colorize" aria-expanded="false"
+                                    <button className="rootLink item-company  colorize" aria-expanded="false"
                                             aria-haspopup="true" data-dropdown="company">
-                                        <span>Company</span>
+                                        <span>Call Us</span>
                                     </button>
                                     <a className="rootLink item-pricing colorize" href="/us/pricing"
                                        data-analytics-source="global_nav" data-analytics-action="pricing">
@@ -53,7 +55,15 @@ class HomePageNav extends React.Component {
                                         <span>Support</span>
                                     </a>
 
-                                       <Link  to="/SignIn" className="rootLink item-support colorize">Sign In</Link>
+
+                                    <a className="rootLink item-support colorize"  href="#signIn">
+                                        <span>signIn</span>
+                                    </a>
+
+                                       {/*<Link  to="/SignIn" className="rootLink item-support colorize" onClick={() => {*/}
+                                           {/*const elmnt = document.getElementById("signIn");*/}
+                                           {/*elmnt.scrollIntoView(true);*/}
+                                       {/*}}>Sign In</Link>*/}
 
                                 </li>
 

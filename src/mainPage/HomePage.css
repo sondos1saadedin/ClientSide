@@ -109,11 +109,145 @@
         }
 
     }
+}
+
+
+
+    #stripes2, #stripes2 span {
+        position: absolute
+    }
+
+    #stripes2 {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        transform: skewx(-65deg);
+        transform-origin: bottom;
+
+        background: linear-gradient(150deg, #53f 10%, #05d5ff 15%, #a6ffcb 94%)
+    }
+
+#test {
+    position: absolute;
+    width: 100%;
+    height: 35%;
+    transform: skewx(0deg);
+    transform-origin: bottom;
+    display: flex;
+    z-index: 999;
+    margin-top: 450px;
+
+}
+
+
+#test1 {
+
+
+}
+    #stripes2 span {
+        height: 30px
+    }
+
+    #stripes2 :first-child {
+        width: 50%;
+        right: 50%;
+        bottom: 40px;
+        background: #a1ffc8
+    }
+
+    #stripes2 :nth-child(2) {
+        width: 14%;
+        left: 0;
+        top: 40px;
+        background: #2be7ff
+    }
+
+    #stripes2 :nth-child(3) {
+        width: 12%;
+        top: 0;
+        left: 0;
+        background: #4c29ff
+
+    }
+
+#stripes2 :nth-child(5) {
+
+    bottom: 0;
+width: 90%;
+    background: white;
+    background-color: #ffffff;
+    z-index: 99;
+
+}
+
+    @media (min-width: 670px) {
+        #stripes2 span {
+            height: 130px
+        }
+
+        #stripes2 :first-child {
+            bottom: 0;
+            background: #4750ff
+        }
+
+        #stripes2 :nth-child(2) {
+            width: 16.66667%;
+            bottom: 300px;
+            top: auto;
+            background: #0dcfff
+        }
+
+        #stripes2 :nth-child(3) {
+            width: 33.33333%;
+            left: auto;
+            background: #11bdff
+        }
+
+        @media (min-width: 880px) {
+            #stripes2 span {
+                height: 190px
+            }
+
+            #stripes2 :first-child {
+                width: 33.33333%;
+                right: -16.66666%;
+                background: #53f
+            }
+
+            #stripes2 :nth-child(2) {
+                width: 33.33333%;
+                bottom: 0;
+                right: 16.66666%;
+                left: auto;
+                background:  #a1ffc8
+            }
+
+            #stripes2 :nth-child(3) {
+                width: 33.33333%;
+                right: 49.99999%;
+                top: auto;
+                background: #4f40ff
+            }
+
+            #stripes2 :nth-child(4) {
+                width: 33.33333%;
+                bottom: 380px;
+                left: -16.66666%;
+                background: #25ddf5
+            }
+
+            #stripes2 :nth-child(5) {
+                width: 33.33333%;
+                top: 0;
+                background: #1fa2ff
+            }
+
+        }
 
 
 
 
-    #intro {
+        #intro {
         position: relative
     }
 
@@ -170,14 +304,14 @@
     }
 
     #intro h1 {
-        font-size: 32px;
+        font-size: 40px;
         font-weight: 400;
         color: #fff
     }
 
     @media (min-width: 880px) {
         #intro h1 {
-            font-size: 20px
+            font-size: 40px
         }
 
     }
@@ -190,7 +324,7 @@
     }
 
     .container, .container-lg {
-        max-width: 1040px
+        max-width: 1200px
     }
 
     #intro p {
@@ -198,6 +332,35 @@
         margin-top: 20px;
         color: #d9fcff
     }
+        #developers-first .common-UppercaseTitle {
+            text-align: center;
+            position: relative;
+        }
+        main h2[class^="common-Uppercase"] {
+            color: #24b47e;
+        }
+        #primary .heading-icon, #secondary .heading-icon {
+            display: block;
+            width: 66px;
+            height: 66px;
+            margin-bottom: 30px;
+        }
+        #primary .heading-icon {
+            margin: 0 auto;
+            margin-bottom: 0px;
+        }
+
+        #developers-first p {
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .common-BodyText {
+            text-align: center;
+            font-weight: 400;
+            font-size: 17px;
+            line-height: 28px;
+            color: #525f7f;
+        }
 
     .globalNav > .container-lg {
         padding: 0
@@ -471,7 +634,8 @@
     .globalContent {
         -webkit-box-flex: 1;
         -ms-flex-positive: 1;
-        flex-grow: 1
+        flex-grow: 1;
+
     }
 
     html[lang=ja] body {
@@ -573,7 +737,7 @@
     }
 
     .container, .container-lg {
-        max-width: 1040px
+        max-width: 1200px
     }
 
     .container-wide, .container-xl {

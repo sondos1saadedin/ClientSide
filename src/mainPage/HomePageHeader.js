@@ -6,6 +6,12 @@ import './HomePage.css';
 import HomePageIntro from "./HomePageIntro";
 import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
 import SignIn from "../BasePages/SignIn";
+import AboutCards from "./AboutCards";
+import HomePageContent from "./HomePageContent";
+import DeveloperFirst from "./DeveloperFirst";
+import CallUsHomePage from "./CallUsHomePage";
+
+
 
 
 class HomePageHeader extends React.Component {
@@ -18,7 +24,7 @@ class HomePageHeader extends React.Component {
 
             <div className="globalContent">
 
-                <main>
+                <main >
                     <header>
                         <div id="stripes" aria-hidden="true">
                             <span></span>
@@ -29,11 +35,29 @@ class HomePageHeader extends React.Component {
                         </div>
                     </header>
 
+                    <HomePageIntro/>
 
-                    <Switch>
-                        <Route exact path="/" component={HomePageIntro}/>
-                        <Route path="/SignIn" component={SignIn}/>
-                    </Switch>
+
+                    <AboutCards/>
+                    <HomePageContent/>
+
+                    <DeveloperFirst/>
+
+
+                    <footer >
+                        <CallUsHomePage />
+
+                        <div id="stripes2" aria-hidden="true">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+
+                        </div>
+
+                    </footer>
+
                 </main>
 
             </div>

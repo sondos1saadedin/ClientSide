@@ -11,6 +11,7 @@ import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import ScenarioPage from '../WriteScenarioPage/ScenarioPage'
+import {connect} from 'react-redux';
 
 const styles = {
     card: {
@@ -44,6 +45,7 @@ class MainPage extends React.Component {
 
         const {classes} = this.props;
 
+        //TODO get the state of our store and then decide to go or not.
         if (this.state.navigate)
             return <ScenarioPage/>
 
@@ -82,7 +84,7 @@ class MainPage extends React.Component {
 
 
                         <Route exact path="/" component={Home}  />
-                        <Route path="/SignIn" component={()=><SignIn changeNav = {this.changeNavigate.bind(this)}/>} />
+                        <Route path="/SignIn" component={()=><SignIn/>} />
                         <Route path="/SignUp" component={SignUp}/>
                     </div>
                 </Router>
@@ -98,4 +100,7 @@ const Home = () => (
 );
 
 
-export default withStyles(styles)(MainPage);
+
+
+
+export default connect() (withStyles(styles)(MainPage));

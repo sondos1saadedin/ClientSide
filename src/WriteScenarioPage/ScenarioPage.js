@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import ScenarioPageBar from './ScenarioPageBar';
-import DemoBase from './ScenarioTable';
+import ScenarioTable from './ScenarioTable';
 
 
 
@@ -14,7 +14,7 @@ class ScenarioPage extends React.Component {
        return(
            <div>
                <ScenarioPageBar/>
-               <DemoBase/>
+               <ScenarioTable/>
            </div>
        )
    }

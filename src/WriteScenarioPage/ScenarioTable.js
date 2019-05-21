@@ -7,7 +7,7 @@ import {
     Grid,
     Table, TableHeaderRow, TableEditRow, TableEditColumn,
     PagingPanel, DragDropProvider, TableColumnReordering,
-    SearchPanel,Toolbar
+    SearchPanel, Toolbar
 } from '@devexpress/dx-react-grid-material-ui';
 import Paper from 'material-ui/Paper';
 import Dialog, {
@@ -22,10 +22,15 @@ import Input from 'material-ui/Input';
 import Select from 'material-ui/Select';
 import {MenuItem} from 'material-ui/Menu';
 import {TableCell} from 'material-ui/Table';
+import Save from 'material-ui-icons/Save';
+import SaveIcon from 'material-ui-icons/Save';
+import TextField from 'material-ui/TextField';
+import './ScenarioPage.css';
+
+import classNames from 'classnames'
 
 import DeleteIcon from 'material-ui-icons/Delete';
 import EditIcon from 'material-ui-icons/Edit';
-import SaveIcon from 'material-ui-icons/Save';
 import CancelIcon from 'material-ui-icons/Cancel';
 import {withStyles} from 'material-ui/styles';
 
@@ -39,6 +44,7 @@ import {
     SearchState,
     IntegratedFiltering,
 } from '@devexpress/dx-react-grid';
+import {connect} from "react-redux";
 
 const styles = theme => ({
     lookupEditCell: {
@@ -108,9 +114,9 @@ const Command = ({id, onExecute}) => {
 };
 
 const availableValues = {
-    action: ["Click Link", "Press Button", "Make a Scenario"],
-    subAction: ["Click Link", "Press Button", "Make a Scenario"],
-    ID: ["Click Link", "Press Button", "Make a Scenario"],
+    action: ["Click Link", "Submit Form", "Fill Param", "Navigate Page", "Check Text"],
+    selectBy: ["none", "name", "id", "class", "any"],
+    visible: ["YES", "NO"],
 };
 
 const LookupEditCellBase = ({
@@ -150,25 +156,25 @@ const EditCell = (props) => {
 
 const getRowId = row => row.id;
 
-class DemoBase extends React.PureComponent {
+class ScenarioTable extends React.PureComponent {
     constructor(props) {
         super(props);
 
         this.state = {
             columns: [
                 {name: 'action', title: 'Action'},
-                {name: 'subAction', title: 'Sub Action'},
+                {name: 'selectBy', title: 'Select By'},
                 {name: 'name', title: 'Name'},
                 {name: 'value', title: 'Value'},
                 {name: 'description', title: 'Description'},
-                {name: 'ID', title: 'ID'},
+                {name: 'visible', title: 'Visible'},
             ],
-            tableColumnExtensions: [
-
-            ],
+            tableColumnExtensions: [],
             rows: [
-                {action: availableValues.action[0], subAction: availableValues.subAction[0], name: "C", value: "D", description: "E", ID: availableValues.ID[0]}
             ],
+            baseUrl: "",
+            title: "",
+            description: "None",
             sorting: [],
             editingRowIds: [],
             addedRows: [],
@@ -177,7 +183,7 @@ class DemoBase extends React.PureComponent {
             deletingRows: [],
             pageSize: 0,
             pageSizes: [5, 10, 0],
-            columnOrder: ['action', 'subAction', 'name', 'value', 'description', 'ID'],
+            columnOrder: ['action', 'selectBy', 'name', 'value', 'description', 'visible'],
             currencyColumns: [],
             percentColumns: [],
         };
@@ -186,12 +192,12 @@ class DemoBase extends React.PureComponent {
         this.changeEditingRowIds = editingRowIds => this.setState({editingRowIds});
         this.changeAddedRows = addedRows => this.setState({
             addedRows: addedRows.map(row => (Object.keys(row).length ? row : {
-                name: 0,
-                value: 0,
-                description: 0,
+                name: "",
+                value: "",
+                description: "",
                 action: availableValues.action[0],
-                subAction: availableValues.subAction[0],
-                ID: availableValues.ID[0],
+                selectBy: availableValues.selectBy[0],
+                visible: availableValues.visible[0],
             })),
         });
         this.changeRowChanges = rowChanges => this.setState({rowChanges});
@@ -200,7 +206,8 @@ class DemoBase extends React.PureComponent {
         this.commitChanges = ({added, changed, deleted}) => {
             let {rows} = this.state;
             if (added) {
-                const startingAddedId = (rows.length - 1) > 0 ? rows[rows.length - 1].id + 1 : 0;
+                const startingAddedId = (rows.length ) > 0 ? rows[rows.length - 1].id + 1 : 0;
+                console.log(startingAddedId)
                 rows = [
                     ...rows,
                     ...added.map((row, index) => ({
@@ -230,6 +237,39 @@ class DemoBase extends React.PureComponent {
         };
     }
 
+
+    saveScenario = () => {
+        fetch('http://localhost:8090/save-scenario', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: this.props.email,
+                url: this.state.baseUrl,
+                description: this.state.description,
+                title: this.state.title,
+                date : new  Date(),
+                data: this.state.rows,
+                testResult : {}
+            })
+        })
+    };
+
+
+    onChangeBasedUrl = (event) => {
+        this.setState({baseUrl: event.target.value})
+    };
+
+    onChangeTitle = (event) => {
+        this.setState({title: event.target.value})
+    };
+
+    onChangeDescription = (event) => {
+        this.setState({description: event.target.value})
+    };
+
     render() {
         const {
             classes,
@@ -253,108 +293,159 @@ class DemoBase extends React.PureComponent {
 
         return (
             <Paper>
-                <Grid
-                    rows={rows}
-                    columns={columns}
-                    getRowId={getRowId}
-                >
-                    <SearchState defaultValue="" />
-                    <IntegratedFiltering />
+                <form  onSubmit={
 
-                    <SortingState
-                        sorting={sorting}
-                        onSortingChange={this.changeSorting}
-                    />
-                    <PagingState
-                        currentPage={currentPage}
-                        onCurrentPageChange={this.changeCurrentPage}
-                        pageSize={pageSize}
-                        onPageSizeChange={this.changePageSize}
-                    />
+                    (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    } }>
+                    <div className="margin-16">
+                        <TextField
+                            required
+                            id="required"
+                            label="URL"
+                            className={classes.textField}
+                            margin="normal"
+                            helperText="Please enter the base url"
+                            onChange={this.onChangeBasedUrl}
+                        />
 
+                        <TextField
+                            required
+                            id="required"
+                            label="Scenario's title"
+                            className={classes.textField}
+                            margin="normal"
+                            helperText="Please enter the scenario's title"
+                            onChange={this.onChangeTitle}
+                            style = {{marginLeft : 48}}
+                        />
 
-                    <IntegratedSorting />
-                    <IntegratedPaging />
+                        <TextField
+                            label="Description"
+                            className={classes.textField}
+                            margin="normal"
+                            helperText="Please enter a description"
+                            onChange={this.onChangeDescription}
+                            style = {{marginLeft : 48}}
 
-                    <CurrencyTypeProvider for={currencyColumns}/>
-                    <PercentTypeProvider for={percentColumns}/>
+                        />
+                    </div>
+                    <Grid
+                        rows={rows}
+                        columns={columns}
+                        getRowId={getRowId}
+                    >
+                        <SearchState defaultValue=""/>
+                        <IntegratedFiltering />
 
-                    <EditingState
-                        editingRowIds={editingRowIds}
-                        onEditingRowIdsChange={this.changeEditingRowIds}
-                        rowChanges={rowChanges}
-                        onRowChangesChange={this.changeRowChanges}
-                        addedRows={addedRows}
-                        onAddedRowsChange={this.changeAddedRows}
-                        onCommitChanges={this.commitChanges}
-                    />
-
-                    <DragDropProvider />
-
-                    <Table
-                        columnExtensions={tableColumnExtensions}
-                        cellComponent={Cell}
-                    />
-
-                    <TableColumnReordering
-                        order={columnOrder}
-                        onOrderChange={this.changeColumnOrder}
-                    />
-
-                    <TableHeaderRow showSortingControls/>
-                    <TableEditRow
-                        cellComponent={EditCell}
-                    />
-                    <TableEditColumn
-                        width={120}
-                        showAddCommand={!addedRows.length}
-                        showEditCommand
-                        showDeleteCommand
-                        commandComponent={Command}
-                    />
-                    <PagingPanel
-                        pageSizes={pageSizes}
-                    />
-                    <Toolbar />
-                    <SearchPanel />
-                </Grid>
-
-                <Dialog
-                    open={!!deletingRows.length}
-                    onClose={this.cancelDelete}
-                    classes={{paper: classes.dialog}}
-                >
-                    <DialogTitle>Delete Row</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                            Are you sure to delete the following row?
-                        </DialogContentText>
-                        <Paper>
-                            <Grid
-                                rows={rows.filter(row => deletingRows.indexOf(row.id) > -1)}
-                                columns={columns}
-                            >
-                                <Table
-                                    columnExtensions={tableColumnExtensions}
-                                    cellComponent={Cell}
-                                />
-                                <TableHeaderRow />
-                            </Grid>
-                        </Paper>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.cancelDelete} color="primary">Cancel</Button>
-                        <Button onClick={this.deleteRows} color="secondary">Delete</Button>
-                    </DialogActions>
-                </Dialog>
+                        <SortingState
+                            sorting={sorting}
+                            onSortingChange={this.changeSorting}
+                        />
+                        <PagingState
+                            currentPage={currentPage}
+                            onCurrentPageChange={this.changeCurrentPage}
+                            pageSize={pageSize}
+                            onPageSizeChange={this.changePageSize}
+                        />
 
 
-                <IconButton  title="Save Scenario">
-                    <SaveIcon />
-                </IconButton>
+                        <IntegratedSorting />
+                        <IntegratedPaging />
+
+                        <CurrencyTypeProvider for={currencyColumns}/>
+                        <PercentTypeProvider for={percentColumns}/>
+
+                        <EditingState
+                            editingRowIds={editingRowIds}
+                            onEditingRowIdsChange={this.changeEditingRowIds}
+                            rowChanges={rowChanges}
+                            onRowChangesChange={this.changeRowChanges}
+                            addedRows={addedRows}
+                            onAddedRowsChange={this.changeAddedRows}
+                            onCommitChanges={this.commitChanges}
+                        />
+
+                        <DragDropProvider />
+
+                        <Table
+                            columnExtensions={tableColumnExtensions}
+                            cellComponent={Cell}
+                        />
+
+                        <TableColumnReordering
+                            order={columnOrder}
+                            onOrderChange={this.changeColumnOrder}
+                        />
+
+                        <TableHeaderRow showSortingControls/>
+                        <TableEditRow
+                            cellComponent={EditCell}
+                        />
+                        <TableEditColumn
+                            width={120}
+                            showAddCommand={!addedRows.length}
+                            showEditCommand
+                            showDeleteCommand
+                            commandComponent={Command}
+                        />
+                        <PagingPanel
+                            pageSizes={pageSizes}
+                        />
+                        <Toolbar />
+                        <SearchPanel />
+                    </Grid>
+
+                    <Dialog
+                        open={!!deletingRows.length}
+                        onClose={this.cancelDelete}
+                        classes={{paper: classes.dialog}}
+                    >
+                        <DialogTitle>Delete Row</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                Are you sure to delete the following row?
+                            </DialogContentText>
+                            <Paper>
+                                <Grid
+                                    rows={rows.filter(row => deletingRows.indexOf(row.id) > -1)}
+                                    columns={columns}
+                                >
+                                    <Table
+                                        columnExtensions={tableColumnExtensions}
+                                        cellComponent={Cell}
+                                    />
+                                    <TableHeaderRow />
+                                </Grid>
+                            </Paper>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.cancelDelete} color="primary">Cancel</Button>
+                            <Button onClick={this.deleteRows} color="secondary">Delete</Button>
+                        </DialogActions>
+                    </Dialog>
+
+
+                    <Button className={classes.button} variant="raised" size="small" onClick={this.saveScenario}
+                            type="submit">
+                        <Save className={classNames(classes.leftIcon, classes.iconSmall)}/>
+                        Save
+                    </Button>
+                </form>
+
             </Paper>
         );
     }
 }
+const mapStateToProps = (state) => {
+    return {
+        email: state.userEmail,
+    }
+};
 
-export default withStyles(styles, {name: 'ControlledModeDemo'})(DemoBase);
+
+
+export default connect(mapStateToProps) (withStyles(styles, {name: 'ControlledModeDemo'})(ScenarioTable));/**
+ * Created by sondo on 26/04/2018.
+ */
